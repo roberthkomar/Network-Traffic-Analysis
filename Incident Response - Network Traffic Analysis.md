@@ -26,9 +26,13 @@ The investigation found that one internal host first verified connectivity using
 
 ### Event 1 – Host Discovery
 
+![ICMP Analysis](screenshots/Linux(Attacker)Ping.png)
+
 The investigation began with ICMP Echo Requests sent from the Ubuntu workstation to the Windows workstation.
 
 Packet analysis showed that all Echo Requests received successful Echo Replies with no packet loss, confirming that the target host was online and reachable.
+
+![ICMP Analysis](screenshots/incoming_ping_linux_attacker.png)
 
 This type of traffic is commonly generated during routine network troubleshooting, monitoring, and administrative tasks. However, it is also frequently observed during the reconnaissance phase of an intrusion, where an attacker first verifies that a target system is active before performing additional actions.
 
@@ -38,7 +42,11 @@ This type of traffic is commonly generated during routine network troubleshootin
 
 Shortly after verifying connectivity, the source host initiated a TCP SYN scan against the Windows workstation using Nmap.
 
+![Port Scan](screenshots/Nmap_scan_linux_attacker.png)
+
 The packet capture showed SYN packets being sent rapidly to approximately 1,000 common TCP ports. The scan identified TCP port 445 as accessible while the remaining ports were either closed or filtered according to the system's firewall configuration.
+
+![Port Scan](screenshots/TCP_Port_Scan_Convo.png)
 
 The high volume of sequential connection attempts indicated automated scanning behavior rather than normal user activity.
 
@@ -53,6 +61,8 @@ After identifying TCP port 445 as open, the source host initiated communication 
 The packet capture showed successful TCP session establishment followed by SMB negotiation and an attempt to enumerate available network shares.
 
 The Windows workstation denied anonymous access, preventing the enumeration from succeeding.
+
+![SMB_Enumeration](screenshots/SMB_enumeration_denied.png)
 
 Enumeration of SMB services is commonly performed during security assessments and administrative tasks but is also a well-known reconnaissance technique used by attackers seeking information about available network resources.
 
